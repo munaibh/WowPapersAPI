@@ -14,6 +14,7 @@ import postController from './../controllers/postController'
 router.get('/', mainController.get)
 router.post('/login', userController.login)
 router.post('/register', userController.register)
+router.get('/posts', postController.get)
 router.post('/posts', postController.create)
 
 // Export Router

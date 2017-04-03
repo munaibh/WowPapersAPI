@@ -2,7 +2,7 @@
 import db from './../models'
 const controller = {}
 
-// Route Functions
+// Create Post
 controller.create = (req,res,next) => {
 
   const image  = req.files.image.file
@@ -19,7 +19,19 @@ controller.create = (req,res,next) => {
       })
     })
     .catch(err => next(err))
-    
+
+}
+
+// Get Post
+controller.get = (req,res,next) => {
+  db.Post.find({})
+    .then(posts => {
+      res.status(200).json({
+        success: true,
+        data: posts
+      })
+    })
+    .catch(err => next(err))
 }
 
 
