@@ -33,6 +33,20 @@ userSchema.methods.hashPassword = function(candidatePassword) {
 
 // Middleware Hooks
 userSchema.pre('save', function(next) {
+  const user = this.constructor
+  user.findOne({ username: this.username })
+    .then(existingUser => {
+      if(existingUser) {
+        const err = new Error("Username is taken.")
+        err.status = 401
+        next(err)
+      }
+      else { next() }
+    })
+    .catch(err => next(err))
+})
+
+userSchema.pre('save', function(next) {
   let user = this
   this.hashPassword(user.password)
     .then(newPassword => {
