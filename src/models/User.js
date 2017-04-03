@@ -31,6 +31,13 @@ userSchema.methods.hashPassword = function(candidatePassword) {
   })
 }
 
+userSchema.methods.comparePassword = function(password, cb) {
+  bcrypt.compare(password, this.password, (err, isMatch) => {
+    if(err) cb(err, false)
+    cb(null, isMatch)
+  })
+}
+
 // Middleware Hooks
 userSchema.pre('save', function(next) {
   const user = this.constructor

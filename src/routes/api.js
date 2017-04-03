@@ -11,6 +11,7 @@ import userController from './../controllers/userController'
 
 // Non-Secure API Routes
 router.get('/', mainController.get)
+router.post('/login', userController.login)
 router.post('/register', userController.register)
 
 // Export Router
