@@ -35,6 +35,23 @@ controller.get = (req,res,next) => {
     .catch(err => next(err))
 }
 
+// Like Post
+controller.like = (req,res,next) => {
+  const post = req.params.post
+  const userId = req.id
+  const like = new db.Like({_creator: userId, _post: post})
+
+  like.addLike().then(() => {
+    db.Like.find({_post: post}).count().then(count => {
+      res.status(200).json({
+        success: true,
+        like_count: count
+      })
+    })
+  })
+  .catch(err => next(err))
+}
+
 
 // Export Controller
 export default controller
