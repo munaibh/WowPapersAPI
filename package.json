@@ -1,0 +1,25 @@
+{
+  "name": "wowpapersapi",
+  "version": "1.0.0",
+  "description": "An API for a wallpaper website.",
+  "main": "build/app.js",
+  "scripts": {
+    "test": "node build/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/munaibh/WowPapersAPI.git"
+  },
+  "keywords": [
+    "API",
+    "Node",
+    "Express",
+    "WowPapers"
+  ],
+  "author": "Munaib Hussain",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/munaibh/WowPapersAPI/issues"
+  },
+  "homepage": "https://github.com/munaibh/WowPapersAPI#readme"
+}
