@@ -1,5 +1,6 @@
 // Imports and Setup
 import db from './../models'
+import jwt from 'jsonwebtoken'
 const controller = {}
 
 // Register User
@@ -28,10 +29,14 @@ controller.login = (req,res,next) => {
       if(user) {
         user.comparePassword(password, (err, isMatch) => {
           if(isMatch) {
+            // JWT Data
+            const data   = { id: user._id, username: user.username }
+            const token  = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: 4000 })
+            // Success Response
             res.status(200).json({
               success: true,
               username: user.username,
-              token: 'Coming Soon'
+              token: token
             })
           }
           else {
