@@ -19,6 +19,7 @@ const postSchema = new Schema({
     teaser: { type: String },
     normal: { type: String, required: true }
   },
+  _creator:  { type: Schema.ObjectId, ref: 'User' },
   isDeleted: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now }
 })
@@ -50,9 +51,18 @@ const getCloudinaryDetails = function(doc, next) {
   next();
 }
 
+const populateCreator = function(next) {
+  this.populate({
+    path: '_creator',
+    select: 'username -_id'
+  })
+  next()
+}
+
 // Middleware Hooks
 postSchema.pre('save', uploadToCloudinary)
 postSchema.post('init', getCloudinaryDetails)
+postSchema.pre('find', populateCreator)
 
 // Export Model
 const Post = mongoose.model('Post', postSchema)
