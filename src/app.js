@@ -8,12 +8,11 @@ import busboy from 'express-busboy'
 // Initialisation
 const app  = express()
 const port = process.env.PORT || 3000
-const database = process.env.DB_NAME
 
 // Some Setup
 dotenv.config()
 busboy.extend(app, { upload: true })
-mongoose.connect(`mongodb://localhost:27017/${database}`)
+mongoose.connect(`mongodb://localhost:27017/${process.env.DB_NAME}`)
 
 // Main Routes
 app.use('/api', require('./routes/api'))
