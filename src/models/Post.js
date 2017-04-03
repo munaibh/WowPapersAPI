@@ -42,8 +42,17 @@ const uploadToCloudinary = function(next) {
     .catch(err => next(err))
 }
 
+const getCloudinaryDetails = function(doc, next) {
+  var thumbParams = { use_root_path: true, secure: true, width: 325, height: 245, crop: "fill" }
+  var fullParams  = { use_root_path: true, secure: true}
+  doc.image.normal    = cloudinary.url(doc.image.normal, fullParams)
+  doc.image.teaser = cloudinary.url(doc.image.normal, thumbParams)
+  next();
+}
+
 // Middleware Hooks
 postSchema.pre('save', uploadToCloudinary)
+postSchema.post('init', getCloudinaryDetails)
 
 // Export Model
 const Post = mongoose.model('Post', postSchema)
