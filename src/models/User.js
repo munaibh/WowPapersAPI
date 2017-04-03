@@ -18,7 +18,29 @@ const userSchema = new Schema({
   }
 })
 
-// Middleware Hooks and Methods
+// Custom Methods
+userSchema.methods.hashPassword = function(candidatePassword) {
+  return new Promise((resolve, reject) => {
+    bcrypt.genSalt(11, (err, salt) => {
+      if(err) reject(err)
+      bcrypt.hash(candidatePassword, salt, (err, hash) => {
+        if(err) reject(err)
+        resolve(hash)
+      })
+    })
+  })
+}
+
+// Middleware Hooks
+userSchema.pre('save', function(next) {
+  let user = this
+  this.hashPassword(user.password)
+    .then(newPassword => {
+      user.password = newPassword
+      next()
+    })
+    .catch(err => next(err))
+})
 
 // Export Model
 const User = mongoose.model('User', userSchema)
