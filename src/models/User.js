@@ -1,6 +1,7 @@
 // Imports and Setup
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
+mongoose.Promise = global.Promise
 const { Schema } = mongoose
 
 // Schema

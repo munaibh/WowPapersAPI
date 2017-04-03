@@ -1,5 +1,5 @@
 // Import Models
-import User from 'User'
+import User from './User'
 
 // Export Models
 export default {
