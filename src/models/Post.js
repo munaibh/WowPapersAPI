@@ -24,8 +24,26 @@ const postSchema = new Schema({
 })
 
 // Custom Methods
+const uploadToCloudinary = function(next) {
+  const self   = this;
+  this.constructor.find({concat_title: self.concat_title})
+    .then(result => {
+      if(result.length === 0) {
+        cloudinary.uploader.upload(self.image.normal, (result) => {
+          self.image.normal = result.public_id
+          next()
+        }, { public_id: `wowpapers/${self.concat_title}` })
+      }
+      else {
+        const err = new Error('Image with name already exists')
+        next(err)
+      }
+    })
+    .catch(err => next(err))
+}
 
 // Middleware Hooks
+postSchema.pre('save', uploadToCloudinary)
 
 // Export Model
 const Post = mongoose.model('Post', postSchema)
