@@ -59,6 +59,42 @@ controller.get = (req,res,next) => {
     .catch(err => next(err))
 }
 
+// Search Posts
+controller.searchByName = (req,res,next) => {
+
+  const page  = req.query.page || 1
+  const limit = Number(req.query.limit) || 5
+  const name  = req.params.name
+
+  db.Post.find({title: { "$regex": req.params.name, "$options": '?i' }}).limit(limit).skip(limit*(page-1))
+    .then(posts => {
+        if(posts.length === 0) throw new Error("No Results")
+        return posts
+      })
+    .then(posts => {
+      async.map(posts, (item, cb) => {
+        db.Like.find({_post: item._id}, (err, likes) => {
+          let exists = []
+          item = item.toObject()
+          item.like_count = likes.length || 0
+          if(req.id) exists = likes.filter((liked) => liked._creator == req.id)
+          item.liked = (exists.length > 0)
+          cb(null, item)
+        })
+      }, (err, results) => {
+        db.Post.find({title: { "$regex": req.params.name, "$options": '?i' }}).skip(limit*page).count()
+          .then(count => {
+            res.status(200).json({
+              success: true,
+              data: results,
+              next_count: count
+            })
+          })
+      })
+    })
+    .catch(err => next(err))
+}
+
 // Like Post
 controller.like = (req,res,next) => {
   const post = req.params.post
