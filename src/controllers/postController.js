@@ -119,6 +119,30 @@ controller.getSingleById = (req,res,next) => {
     .catch(err => next(err))
 }
 
+// Get Single Post By Slug
+controller.getSingleBySlug = (req,res,next) => {
+
+  db.Post.findOne({concat_title: req.params.slug})
+    .then(post => {
+        if(!post) throw new Error("No Results")
+        return post
+      })
+    .then(post => {
+        db.Like.find({_post: post._id}, (err, likes) => {
+          let exists = []
+          post = post.toObject()
+          post.like_count = likes.length || 0
+          if(req.id) exists = likes.filter((liked) => liked._creator == req.id)
+          post.liked = (exists.length > 0)
+          res.status(200).json({
+            success: true,
+            data: post,
+          })
+        })
+    })
+    .catch(err => next(err))
+}
+
 // Like Post
 controller.like = (req,res,next) => {
   const post = req.params.post
