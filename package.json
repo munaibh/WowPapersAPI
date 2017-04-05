@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/munaibh/WowPapersAPI#readme",
   "dependencies": {
+    "async": "^2.3.0",
     "bcrypt": "^1.0.2",
     "cloudinary": "^1.8.0",
     "dotenv": "^4.0.0",

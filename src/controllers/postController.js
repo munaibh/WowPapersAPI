@@ -1,5 +1,6 @@
 // Imports and Setup
 import db from './../models'
+import async from 'async'
 const controller = {}
 
 // Create Post
