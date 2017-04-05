@@ -26,7 +26,15 @@ controller.create = (req,res,next) => {
 
 // Get Post
 controller.get = (req,res,next) => {
-  db.Post.find({})
+
+  const page  = req.query.page || 1
+  const limit = Number(req.query.limit) || 5
+
+  db.Post.find({}).limit(limit).skip(limit*(page-1))
+    .then(posts => {
+        if(posts.length === 0) throw new Error("No Results")
+        return posts
+      })
     .then(posts => {
       async.map(posts, (item, cb) => {
         db.Like.find({_post: item._id}, (err, likes) => {
@@ -38,10 +46,14 @@ controller.get = (req,res,next) => {
           cb(null, item)
         })
       }, (err, results) => {
-        res.status(200).json({
-          success: true,
-          data: results
-        })
+        db.Post.find({}).skip(limit*page).count()
+          .then(count => {
+            res.status(200).json({
+              success: true,
+              data: results,
+              next_count: count
+            })
+          })
       })
     })
     .catch(err => next(err))
