@@ -18,7 +18,7 @@ router.get('/posts', mainController.getCredentials, postController.get)
 
 // Secure API Routes
 router.post('/posts', mainController.authenticateUser, postController.create)
-router.post('/posts/like/:post', mainController.getCredentials, postController.like)
+router.post('/posts/like/:post', mainController.authenticateUser, postController.like)
 
 // Export Router
 module.exports = router

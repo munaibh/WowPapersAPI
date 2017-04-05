@@ -5,8 +5,8 @@ const { Schema } = mongoose
 
 // Schema
 const likeSchema = new Schema({
-  _creator: { type: Schema.ObjectId, ref: 'User' },
-  _post: { type: Schema.ObjectId, ref: 'Post' },
+  _creator: { type: Schema.ObjectId, ref: 'User' , required: true},
+  _post: { type: Schema.ObjectId, ref: 'Post' , required: true},
   isDeleted: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now }
 })
