@@ -63,6 +63,7 @@ const populateCreator = function(next) {
 postSchema.pre('save', uploadToCloudinary)
 postSchema.post('init', getCloudinaryDetails)
 postSchema.pre('find', populateCreator)
+postSchema.pre('findOne', populateCreator)
 
 // Export Model
 const Post = mongoose.model('Post', postSchema)

@@ -16,6 +16,7 @@ router.post('/login', userController.login)
 router.post('/register', userController.register)
 router.get('/posts', mainController.getCredentials, postController.get)
 router.get('/posts/search/:name', mainController.getCredentials, postController.searchByName)
+router.get('/posts/:id', mainController.getCredentials, postController.getSingleById)
 
 // Secure API Routes
 router.post('/posts', mainController.authenticateUser, postController.create)
