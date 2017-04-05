@@ -28,9 +28,20 @@ controller.create = (req,res,next) => {
 controller.get = (req,res,next) => {
   db.Post.find({})
     .then(posts => {
-      res.status(200).json({
-        success: true,
-        data: posts
+      async.map(posts, (item, cb) => {
+        db.Like.find({_post: item._id}, (err, likes) => {
+          let exists = []
+          item = item.toObject()
+          item.like_count = likes.length || 0
+          if(req.id) exists = likes.filter((liked) => liked._creator == req.id)
+          item.liked = (exists.length > 0)
+          cb(null, item)
+        })
+      }, (err, results) => {
+        res.status(200).json({
+          success: true,
+          data: results
+        })
       })
     })
     .catch(err => next(err))
