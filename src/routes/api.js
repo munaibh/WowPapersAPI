@@ -8,7 +8,10 @@ import userController from './../controllers/userController'
 import postController from './../controllers/postController'
 
 // Middleware
-// TODO: Add Authentication Check
+// TODO: Add Better Authentication
+// TODO: Rename Routes
+// TODO: Add More Structure Middleware
+// TODO: Comment Code
 
 // Non-Secure API Routes
 router.get('/', mainController.get)
