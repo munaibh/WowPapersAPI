@@ -53,5 +53,16 @@ controller.login = (req,res,next) => {
     })
 }
 
+controller.getCurrentUser = (req,res,next) => {
+  const token = req.body.token || req.headers['token']
+  db.User.findById(req.id)
+    .then(user => {
+      res.status(200).json({
+        username: user.username,
+        token: token
+      })
+    })
+    .catch(err => next(err))
+}
 // Export Controller
 export default controller

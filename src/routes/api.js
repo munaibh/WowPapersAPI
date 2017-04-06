@@ -17,6 +17,7 @@ import postController from './../controllers/postController'
 router.get('/', mainController.get)
 router.post('/login', userController.login)
 router.post('/register', userController.register)
+router.get('/me', mainController.authenticateUser, userController.getCurrentUser)
 router.get('/posts', mainController.getCredentials, postController.get)
 router.get('/posts/search/:name', mainController.getCredentials, postController.searchByName)
 router.get('/posts/:id', mainController.getCredentials, postController.getSingleById)
